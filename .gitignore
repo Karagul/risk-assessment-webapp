@@ -1,0 +1,4 @@
+risk_assessment_webapp/settings.py
+*pycache*
+*env_settings.py
+*db.sqlite3*

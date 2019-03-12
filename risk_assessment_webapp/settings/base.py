@@ -12,6 +12,8 @@ https://docs.djangoproject.com/en/2.1/ref/settings/
 
 import os
 
+from .env_settings import SECRET_KEY, ALLOWED_HOSTS, STATIC_ROOT, STATIC_URL, MEDIA_ROOT, MEDIA_URL
+
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
@@ -20,12 +22,12 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 # See https://docs.djangoproject.com/en/2.1/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = '$h*0ao@&71&p!73z9&wjh7+b#_ff289bx!78&j@&3u2xwm0$y9'
+SECRET_KEY = SECRET_KEY
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ALLOWED_HOSTS
 
 
 # Application definition
@@ -116,5 +118,12 @@ USE_TZ = True
 
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/2.1/howto/static-files/
+STATICFILES_DIRS = [
+    os.path.join(BASE_DIR, "assets/"),
+]
 
-STATIC_URL = '/static/'
+STATIC_ROOT = STATIC_ROOT
+STATIC_URL = STATIC_URL
+
+MEDIA_ROOT = MEDIA_ROOT
+MEDIA_URL = MEDIA_URL
