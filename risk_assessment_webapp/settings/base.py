@@ -33,6 +33,8 @@ ALLOWED_HOSTS = ALLOWED_HOSTS
 # Application definition
 
 INSTALLED_APPS = [
+    'hardware.apps.HardwareConfig',
+    #default apps
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
