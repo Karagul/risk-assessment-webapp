@@ -1,66 +1,5 @@
 from django.db import models
 
-# Create your models here.
-class Vendor(models.Model):
-    name = models.CharField(max_length=255)
-    note = models.TextField(max_length=255, blank=True, null=True)
-
-    class Meta:
-        db_table = 'vendor'
-
-    def __str__(self):
-        return self.name
-
-class Hardware(models.Model):
-    label = models.TextField(max_length=255)
-    description = models.TextField(max_length=255)
-    #NIST stuff
-    product = models.CharField(max_length=255)
-    version = models.CharField(max_length=255)
-    update = models.CharField(max_length=255, blank=True, null=True)
-    edition = models.CharField(max_length=255, blank=True, null=True)
-    sw_edition = models.CharField(max_length=255, blank=True, null=True)
-    target_sw = models.CharField(max_length=255, blank=True, null=True)
-    target_hw = models.CharField(max_length=255, blank=True, null=True)
-    language = models.CharField(max_length=255, blank=True, null=True)
-    other = models.CharField(max_length=255, blank=True, null=True)
-
-    #calc field, maybe make property
-    cpe_string = models.CharField(max_length=255, blank=True, null=True)
-
-    vendor = models.ForeignKey(Vendor, on_delete=models.CASCADE)
-
-
-
-    class Meta:
-        db_table = 'hardware'
-
-    def __str__(self):
-        return str(self.product + ' ' + self.version + ' ' + self.update)
-
-class OperatingSystem(models.Model):
-    product = models.CharField(max_length=255)
-    version = models.CharField(max_length=255)
-    update = models.CharField(max_length=255, blank=True, null=True)
-    edition = models.CharField(max_length=255, blank=True, null=True)
-    sw_edition = models.CharField(max_length=255, blank=True, null=True)
-    target_sw = models.CharField(max_length=255, blank=True, null=True)
-    target_hw = models.CharField(max_length=255, blank=True, null=True)
-    language = models.CharField(max_length=255, blank=True, null=True)
-    other = models.CharField(max_length=255, blank=True, null=True)
-
-    # calc field
-    cpe_string = models.CharField(max_length=255, blank=True, null=True)
-
-    vendor = models.ForeignKey(Vendor, on_delete=models.CASCADE)
-
-
-
-    class Meta:
-        db_table = 'operating_system'
-
-    def __str__(self):
-        return str(self.product + ' ' + self.version + ' ' + self.update)
 # NIST choicest models--------------------------------------------------------------------
 class NISTVendorOption(models.Model):
     name = models.CharField(max_length=255)
@@ -190,3 +129,56 @@ class NISTOperatingSystemOption(models.Model):
         return str(self.product + ' ' + self.version + ' ' + self.update)
 
 # NIST choicest models--------------------------------------------------------------------END
+class Vendor(models.Model):
+    name = models.CharField(max_length=255)
+    note = models.TextField(max_length=255, blank=True, null=True)
+
+    class Meta:
+        db_table = 'vendor'
+
+    def __str__(self):
+        return self.name
+
+class Hardware(models.Model):
+    label = models.CharField(max_length=255)
+    description = models.TextField(max_length=255)
+    note = models.TextField(max_length=255)
+
+    #calc field, maybe make property
+    cpe_string = models.CharField(max_length=255, blank=True, null=True)
+
+    # Foreign keys
+    vendor = models.ForeignKey(NISTVendorOption, on_delete=models.CASCADE)
+    hardware = models.ForeignKey(NISTHardwareOption, on_delete=models.CASCADE)
+
+
+
+    class Meta:
+        db_table = 'hardware'
+
+    def __str__(self):
+        return self.label
+
+class OperatingSystem(models.Model):
+    product = models.CharField(max_length=255)
+    version = models.CharField(max_length=255)
+    update = models.CharField(max_length=255, blank=True, null=True)
+    edition = models.CharField(max_length=255, blank=True, null=True)
+    sw_edition = models.CharField(max_length=255, blank=True, null=True)
+    target_sw = models.CharField(max_length=255, blank=True, null=True)
+    target_hw = models.CharField(max_length=255, blank=True, null=True)
+    language = models.CharField(max_length=255, blank=True, null=True)
+    other = models.CharField(max_length=255, blank=True, null=True)
+
+    # calc field
+    cpe_string = models.CharField(max_length=255, blank=True, null=True)
+
+    vendor = models.ForeignKey(Vendor, on_delete=models.CASCADE)
+
+
+
+    class Meta:
+        db_table = 'operating_system'
+
+    def __str__(self):
+        return str(self.product + ' ' + self.version + ' ' + self.update)
