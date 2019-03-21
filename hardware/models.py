@@ -1,5 +1,6 @@
 from django.db import models
 
+
 # NIST choicest models--------------------------------------------------------------------
 class NISTVendorOption(models.Model):
     name = models.CharField(max_length=255)
