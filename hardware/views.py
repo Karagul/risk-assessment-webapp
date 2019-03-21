@@ -3,7 +3,7 @@ from django.shortcuts import render
 # Create your views here.
 from dal import autocomplete
 
-from .models import NISTVendorOption, NISTHardwareOption
+from .models import NISTVendorOption, NISTHardwareOption, NISTOperatingSystemOption
 
 
 class VendorAutocomplete(autocomplete.Select2QuerySetView):
@@ -33,7 +33,25 @@ class HardwareAutocomplete(autocomplete.Select2QuerySetView):
 
         if self.q:
             qs = qs.filter(product__istartswith=self.q)
-            print(qs.query)
+            return qs
+
+        return qs
+
+class OperatingSystemAutocomplete(autocomplete.Select2QuerySetView):
+    def get_queryset(self):
+        # Don't forget to filter out results depending on the visitor !
+        if not self.request.user.is_authenticated:
+            return NISTOperatingSystemOption.objects.none()
+
+        qs = NISTOperatingSystemOption.objects.all().order_by('product')
+
+        vendor = self.forwarded.get('vendor', None)
+
+        if vendor:
+            qs = qs.filter(vendor=vendor)
+
+        if self.q:
+            qs = qs.filter(product__istartswith=self.q)
             return qs
 
         return qs

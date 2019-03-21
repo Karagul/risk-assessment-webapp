@@ -1,7 +1,7 @@
 from django.db import models
 
 # Create your models here.
-from hardware.models import NISTVendorOption
+from hardware.models import NISTVendorOption, Hardware
 
 # NIST choices models--------------------------------------------------------------------
 class NISTApplicationOption(models.Model):
@@ -24,6 +24,39 @@ class NISTApplicationOption(models.Model):
     def __str__(self):
         return str(self.product + ' ' + self.version + ' ' + self.update)
 # NIST choicest models--------------------------------------------------------------------END
+
+class Application(models.Model):
+    label = models.CharField(max_length=255)
+    description = models.TextField(max_length=255)
+    note = models.TextField(max_length=255)
+
+    #calc field, maybe make property
+    cpe_string = models.CharField(max_length=255, blank=True, null=True)
+
+    # product = models.CharField(max_length=50)
+    # version = models.CharField(max_length=255)
+    # update = models.CharField(max_length=255, blank=True, null=True)
+    # edition = models.CharField(max_length=255, blank=True, null=True)
+    # sw_edition = models.CharField(max_length=255, blank=True, null=True)
+    # target_sw = models.CharField(max_length=255, blank=True, null=True)
+    # target_hw = models.CharField(max_length=255, blank=True, null=True)
+    # language = models.CharField(max_length=255, blank=True, null=True)
+    # other = models.CharField(max_length=255, blank=True, null=True)
+
+    #NIST stuff
+    vendor = models.ForeignKey(NISTVendorOption, on_delete=models.CASCADE)
+    application = models.ForeignKey(NISTApplicationOption, on_delete=models.CASCADE)
+
+    # Foreign keys
+    hardware = models.ManyToManyField(Hardware)
+
+
+    class Meta:
+        db_table = 'application'
+
+    def __str__(self):
+        return self.label
+
 
 
 # ONLY CREATE REPORT ONCE PROCESS_COMPLETE()==TRUE

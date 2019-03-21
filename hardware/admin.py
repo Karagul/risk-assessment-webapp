@@ -2,7 +2,7 @@ from django.contrib import admin
 
 # Register your models here.
 from .models import NISTVendorOption, NISTOperatingSystemOption, NISTHardwareOption, Vendor, Hardware, OperatingSystem
-from .forms import HardwareForm
+from .forms import HardwareForm, OperatingSystemForm
 
 admin.site.register(NISTVendorOption)
 admin.site.register(NISTOperatingSystemOption)
@@ -13,5 +13,7 @@ class HardwareAdmin(admin.ModelAdmin):
     form = HardwareForm
 admin.site.register(Hardware, HardwareAdmin)
 
-admin.site.register(OperatingSystem)
-#admin.site.register(Hardware)
+class OperatingSystemAdmin(admin.ModelAdmin):
+    model = OperatingSystem
+    form = OperatingSystemForm
+admin.site.register(OperatingSystem, OperatingSystemAdmin)

@@ -139,46 +139,48 @@ class Vendor(models.Model):
     def __str__(self):
         return self.name
 
-class Hardware(models.Model):
+class OperatingSystem(models.Model):
     label = models.CharField(max_length=255)
     description = models.TextField(max_length=255)
     note = models.TextField(max_length=255)
 
-    #calc field, maybe make property
+    # product = models.CharField(max_length=255)
+    # version = models.CharField(max_length=255)
+    # update = models.CharField(max_length=255, blank=True, null=True)
+    # edition = models.CharField(max_length=255, blank=True, null=True)
+    # sw_edition = models.CharField(max_length=255, blank=True, null=True)
+    # target_sw = models.CharField(max_length=255, blank=True, null=True)
+    # target_hw = models.CharField(max_length=255, blank=True, null=True)
+    # language = models.CharField(max_length=255, blank=True, null=True)
+    # other = models.CharField(max_length=255, blank=True, null=True)
+
+    # calc field
     cpe_string = models.CharField(max_length=255, blank=True, null=True)
 
-    # Foreign keys
+    vendor = models.ForeignKey(NISTVendorOption, on_delete=models.CASCADE)
+    operating_system = models.ForeignKey(NISTOperatingSystemOption, on_delete=models.CASCADE)
+
+    class Meta:
+        db_table = 'operating_system'
+
+    def __str__(self):
+        return self.label
+
+class Hardware(models.Model):
+    label = models.CharField(max_length=255)
+    description = models.TextField(max_length=255)
+    note = models.TextField(max_length=255)
+    #calc field, maybe make property
+    cpe_string = models.CharField(max_length=255, blank=True, null=True)
+    # NIST options
     vendor = models.ForeignKey(NISTVendorOption, on_delete=models.CASCADE)
     hardware = models.ForeignKey(NISTHardwareOption, on_delete=models.CASCADE)
-
-
+    # Foreign keys
+    operating_system = models.ForeignKey(OperatingSystem, on_delete=models.CASCADE)
 
     class Meta:
         db_table = 'hardware'
 
     def __str__(self):
         return self.label
-
-class OperatingSystem(models.Model):
-    product = models.CharField(max_length=255)
-    version = models.CharField(max_length=255)
-    update = models.CharField(max_length=255, blank=True, null=True)
-    edition = models.CharField(max_length=255, blank=True, null=True)
-    sw_edition = models.CharField(max_length=255, blank=True, null=True)
-    target_sw = models.CharField(max_length=255, blank=True, null=True)
-    target_hw = models.CharField(max_length=255, blank=True, null=True)
-    language = models.CharField(max_length=255, blank=True, null=True)
-    other = models.CharField(max_length=255, blank=True, null=True)
-
-    # calc field
-    cpe_string = models.CharField(max_length=255, blank=True, null=True)
-
-    vendor = models.ForeignKey(Vendor, on_delete=models.CASCADE)
-
-
-
-    class Meta:
-        db_table = 'operating_system'
-
-    def __str__(self):
-        return str(self.product + ' ' + self.version + ' ' + self.update)
+        

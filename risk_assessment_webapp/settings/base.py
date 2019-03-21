@@ -35,6 +35,8 @@ ALLOWED_HOSTS = ALLOWED_HOSTS
 INSTALLED_APPS = [
     'hardware.apps.HardwareConfig',
     'applications.apps.ApplicationsConfig',
+    'systems.apps.SystemsConfig',
+    'surveys.apps.SurveysConfig',
     #Third-Party apps
     'dal',
     'dal_select2',
