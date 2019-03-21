@@ -37,6 +37,9 @@ INSTALLED_APPS = [
     'applications.apps.ApplicationsConfig',
     'systems.apps.SystemsConfig',
     'surveys.apps.SurveysConfig',
+    'activities.apps.ActivitiesConfig',
+    'infoassets.apps.InfoassetsConfig',
+    'roles.apps.RolesConfig',
     #Third-Party apps
     'dal',
     'dal_select2',
