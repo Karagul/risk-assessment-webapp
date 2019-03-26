@@ -1,3 +1,6 @@
 from django.contrib import admin
 
-# Register your models here.
+from .models import BusinessRole, SystemRole
+
+admin.site.register(BusinessRole)
+admin.site.register(SystemRole)

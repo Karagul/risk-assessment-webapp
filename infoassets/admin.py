@@ -1,3 +1,6 @@
 from django.contrib import admin
 
-# Register your models here.
+from .models import InfoAssetGroup, DataType
+
+admin.site.register(InfoAssetGroup)
+admin.site.register(DataType)

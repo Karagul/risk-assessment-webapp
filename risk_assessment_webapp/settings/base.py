@@ -12,7 +12,7 @@ https://docs.djangoproject.com/en/2.1/ref/settings/
 
 import os
 
-from .env_settings import SECRET_KEY, ALLOWED_HOSTS, STATIC_ROOT, STATIC_URL, MEDIA_ROOT, MEDIA_URL
+from .env_settings import SECRET_KEY, ALLOWED_HOSTS, STATIC_ROOT, STATIC_URL, MEDIA_ROOT, MEDIA_URL, DB_NAME, DB_HOST, DB_PASSWORD, DB_PORT, DB_USER
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
@@ -40,6 +40,7 @@ INSTALLED_APPS = [
     'activities.apps.ActivitiesConfig',
     'infoassets.apps.InfoassetsConfig',
     'roles.apps.RolesConfig',
+    'vulnerabilities.apps.VulnerabilitiesConfig',
     #Third-Party apps
     'dal',
     'dal_select2',
@@ -86,14 +87,22 @@ WSGI_APPLICATION = 'risk_assessment_webapp.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/2.1/ref/settings/#databases
 
+# DATABASES = {
+    # 'default': {
+        # 'ENGINE': 'django.db.backends.sqlite3',
+        # 'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
+    # }
+# }
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
+        'ENGINE': 'django.db.backends.postgresql',
+        'NAME': DB_NAME,
+        'USER': DB_USER,
+        'PASSWORD': DB_PASSWORD,
+        'HOST': DB_HOST,
+        'PORT': DB_PORT,
     }
 }
-
-
 # Password validation
 # https://docs.djangoproject.com/en/2.1/ref/settings/#auth-password-validators
 
