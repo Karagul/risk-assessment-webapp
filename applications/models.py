@@ -5,7 +5,7 @@ from hardware.models import NISTVendorOption, Hardware
 
 # NIST choices models--------------------------------------------------------------------
 class NISTApplicationOption(models.Model):
-    product = models.CharField(max_length=50)
+    product = models.CharField(max_length=255)
     version = models.CharField(max_length=255)
     update = models.CharField(max_length=255, blank=True, null=True)
     edition = models.CharField(max_length=255, blank=True, null=True)
@@ -22,7 +22,7 @@ class NISTApplicationOption(models.Model):
         db_table = 'nist_application_option'
 
     def __str__(self):
-        return str(self.product + ' ' + self.version + ' ' + self.update)
+        return str('cpe:2.3:a:' + str(self.vendor) + ':' + self.product + ':' + self.version + ':' + self.update + ':' + self.edition + ':' + self.language + ':' + self.language + ':' + self.sw_edition + ':' + self.target_sw + ':' + self.target_hw + ':' + self.other)
 # NIST choicest models--------------------------------------------------------------------END
 
 class Application(models.Model):
