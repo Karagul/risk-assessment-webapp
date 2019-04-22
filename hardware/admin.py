@@ -10,6 +10,8 @@ admin.site.register(NISTOperatingSystemOption)
 admin.site.register(NISTHardwareOption)
 class ApplicationInline(admin.TabularInline):
     model = Application.hardware.through
+class VulnerabilityInline(admin.TabularInline):
+    model = OperatingSystem.vulnerability.through
 
 class HardwareAdmin(admin.ModelAdmin):
     model = Hardware
@@ -20,4 +22,5 @@ admin.site.register(Hardware, HardwareAdmin)
 class OperatingSystemAdmin(admin.ModelAdmin):
     model = OperatingSystem
     form = OperatingSystemForm
+    inlines = [VulnerabilityInline]
 admin.site.register(OperatingSystem, OperatingSystemAdmin)

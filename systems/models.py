@@ -10,6 +10,7 @@ class System(models.Model):
 
     # Foreign keys
     hardware = models.ManyToManyField(Hardware)
+    #add system role
 
 
     class Meta:

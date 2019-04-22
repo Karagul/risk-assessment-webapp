@@ -18,7 +18,15 @@ class ApplicationForm(forms.ModelForm):
             )
         )
     )
-
+    # version = forms.ModelChoiceField(
+        # queryset=NISTApplicationOption.objects.all(),
+        # widget=autocomplete.ModelSelect2(
+            # url='applications:application-autocomplete',
+            # forward=(
+                # 'vendor',
+            # )
+        # )
+    # )
     class Meta:
         model = Application
         fields = ('label', 'description', 'note', 'vendor', 'hardware',)

@@ -1,7 +1,11 @@
 from django.db import models
+from django.db.models import Q
 
 # Create your models here.
 from hardware.models import NISTVendorOption, Hardware
+from vulnerabilities.models import Vulnerability
+
+from ares import CVESearch
 
 # NIST choices models--------------------------------------------------------------------
 class NISTApplicationOption(models.Model):
@@ -22,7 +26,66 @@ class NISTApplicationOption(models.Model):
         db_table = 'nist_application_option'
 
     def __str__(self):
-        return str('cpe:2.3:a:' + str(self.vendor) + ':' + self.product + ':' + self.version + ':' + self.update + ':' + self.edition + ':' + self.language + ':' + self.language + ':' + self.sw_edition + ':' + self.target_sw + ':' + self.target_hw + ':' + self.other)
+        return str('cpe:2.3:a:' + str(self.vendor) + ':' + self.product + ':' + self.version + ':' + self.update + ':' + self.edition + ':' + self.language + ':' + self.sw_edition + ':' + self.target_sw + ':' + self.target_hw + ':' + self.other)
+
+    def get_cves(self):
+        from vulnerabilities.models import NISTCVE
+        from packaging import version
+        v = None
+        # use product and version to search via api
+        # get cve ids from response
+        # query local db for cve_id
+        # 
+        # return
+        base_url = 'https://cve.circl.lu/api/cvefor/'
+        cpe_string = 'cpe:2.3:a:' + str(self.vendor) + ':' + self.product + ':' + self.version
+        
+        cve = CVESearch()
+        # result = cve.search(str(self.vendor) + '/' + self.product)
+        result = cve.cvefor(base_url + cpe_string)
+        # https://cve.circl.lu/api/cvefor/cpe:2.3:a:apache:http_server:2.4.37
+
+
+       # This shit probably won't work-------------------------------------------------------------------------------------- 
+        # contains exact e.g. apache:http_server:2.4.37
+        # cpe_string = 'cpe:2.3:a:' + str(self.vendor) + ':' + self.product + ':' + self.version
+        # v = NISTCVE.objects.filter(
+            # Q(vulnerable_cpe__cpe_json__cpe23Uri__icontains=cpe_string) |
+
+            # Q(vulnerable_cpe__cpe_json__icontains=str(self.vendor)) &
+            # Q(vulnerable_cpe__cpe_json__icontains=self.product) &
+            # Q(vulnerable_cpe__cpe_json__icontains='versionEndIncluding')
+        # )
+        # v2 = NISTCVE.objects.filter(
+            # Q(vulnerable_cpe__cpe_json__cpe23Uri__icontains=str(self.vendor)) &
+            # Q(vulnerable_cpe__cpe_json__cpe23Uri__icontains=self.product) &
+            # Q(vulnerable_cpe__cpe_json__icontains='versionEndIncluding')
+        # )
+        # if v2.count() > 0:
+            # for vuln in v2:
+                # print(vuln)
+                # # check if versionEndIncluding
+                # for cpe in vuln.vulnerable_cpe.all():
+                    # print(cpe.cpe_json)
+                    # v_including = cpe.cpe_json.get('versionEndIncluding', 'None')
+                    # # check if versionEndExcluding
+                    # v_excluding = cpe.cpe_json.get('versionEndExcluding', 'None')
+                    # if v_including != 'None':
+                        # # get version and convert to float
+                        # # is self.version less than versionEndIncluding?
+                        # if version.parse(v_including) >= version.parse(self.version):
+                            # print(cpe)
+                    # elif v_excluding != 'None':
+                        # # get version and convert to float
+                        # # is self.version less than versionEndIncluding?
+                        # if version.parse(v_excluding) > version.parse(self.version):
+                            # print(cpe)
+                    # else:
+                        # # remove from queryset
+                        # pass
+                        
+        # or contains cpe:2.3:a:apache:http_server:*:*:*:*:*:*:*:* and versionEndIncluding is less than float(version)
+        return result
 # NIST choicest models--------------------------------------------------------------------END
 
 class Application(models.Model):
@@ -49,6 +112,7 @@ class Application(models.Model):
 
     # Foreign keys
     hardware = models.ManyToManyField(Hardware)
+    vulnerability = models.ManyToManyField(Vulnerability)
 
 
     class Meta:
@@ -56,6 +120,20 @@ class Application(models.Model):
 
     def __str__(self):
         return self.label
+
+    def cve_getter(self):
+        cve_dict = self.application.get_cves()
+        for cve in cve_dict:
+            # print(cve['Modified'])
+            # print(cve['Published'])
+            # print(cve['id'])
+            # print(cve['summary'])
+            vuln, created = Vulnerability.objects.get_or_create(
+                cve_json=cve
+            )
+            self.vulnerability.add(vuln)
+
+        return True
 
 
 

@@ -1,5 +1,6 @@
 from django.db import models
 
+from vulnerabilities.models import Vulnerability
 
 # NIST choicest models--------------------------------------------------------------------
 class NISTVendorOption(models.Model):
@@ -127,7 +128,24 @@ class NISTOperatingSystemOption(models.Model):
         db_table = 'nist_operating_system_option'
 
     def __str__(self):
-        return str(self.product + ' ' + self.version + ' ' + self.update)
+        return str('cpe:2.3:o:' + str(self.vendor) + ':' + self.product + ':' + self.version + ':' + self.update + ':' + self.edition + ':' + self.language + ':' + self.sw_edition + ':' + self.target_sw + ':' + self.target_hw + ':' + self.other)
+
+    def get_cves(self):
+        from packaging import version
+        from ares import CVESearch
+        v = None
+        # use product and version to search via api
+        # get cve ids from response
+        # query local db for cve_id
+        # 
+        # return
+        base_url = 'https://cve.circl.lu/api/cvefor/'
+        cpe_string = 'cpe:2.3:o:' + str(self.vendor) + ':' + self.product + ':' + self.version
+        
+        cve = CVESearch()
+        # result = cve.search(str(self.vendor) + '/' + self.product)
+        result = cve.cvefor(base_url + cpe_string)
+        return result
 
 # NIST choicest models--------------------------------------------------------------------END
 class Vendor(models.Model):
@@ -160,12 +178,27 @@ class OperatingSystem(models.Model):
 
     vendor = models.ForeignKey(NISTVendorOption, on_delete=models.CASCADE)
     operating_system = models.ForeignKey(NISTOperatingSystemOption, on_delete=models.CASCADE)
+    vulnerability = models.ManyToManyField(Vulnerability)
 
     class Meta:
         db_table = 'operating_system'
 
     def __str__(self):
         return self.label
+
+    def cve_getter(self):
+        cve_dict = self.operating_system.get_cves()
+        for cve in cve_dict:
+            # print(cve['Modified'])
+            # print(cve['Published'])
+            # print(cve['id'])
+            # print(cve['summary'])
+            vuln, created = Vulnerability.objects.get_or_create(
+                cve_json=cve
+            )
+            self.vulnerability.add(vuln)
+
+        return True
 
 class Hardware(models.Model):
     label = models.CharField(max_length=255)
