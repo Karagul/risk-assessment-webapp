@@ -46,45 +46,6 @@ class NISTApplicationOption(models.Model):
         # https://cve.circl.lu/api/cvefor/cpe:2.3:a:apache:http_server:2.4.37
 
 
-       # This shit probably won't work-------------------------------------------------------------------------------------- 
-        # contains exact e.g. apache:http_server:2.4.37
-        # cpe_string = 'cpe:2.3:a:' + str(self.vendor) + ':' + self.product + ':' + self.version
-        # v = NISTCVE.objects.filter(
-            # Q(vulnerable_cpe__cpe_json__cpe23Uri__icontains=cpe_string) |
-
-            # Q(vulnerable_cpe__cpe_json__icontains=str(self.vendor)) &
-            # Q(vulnerable_cpe__cpe_json__icontains=self.product) &
-            # Q(vulnerable_cpe__cpe_json__icontains='versionEndIncluding')
-        # )
-        # v2 = NISTCVE.objects.filter(
-            # Q(vulnerable_cpe__cpe_json__cpe23Uri__icontains=str(self.vendor)) &
-            # Q(vulnerable_cpe__cpe_json__cpe23Uri__icontains=self.product) &
-            # Q(vulnerable_cpe__cpe_json__icontains='versionEndIncluding')
-        # )
-        # if v2.count() > 0:
-            # for vuln in v2:
-                # print(vuln)
-                # # check if versionEndIncluding
-                # for cpe in vuln.vulnerable_cpe.all():
-                    # print(cpe.cpe_json)
-                    # v_including = cpe.cpe_json.get('versionEndIncluding', 'None')
-                    # # check if versionEndExcluding
-                    # v_excluding = cpe.cpe_json.get('versionEndExcluding', 'None')
-                    # if v_including != 'None':
-                        # # get version and convert to float
-                        # # is self.version less than versionEndIncluding?
-                        # if version.parse(v_including) >= version.parse(self.version):
-                            # print(cpe)
-                    # elif v_excluding != 'None':
-                        # # get version and convert to float
-                        # # is self.version less than versionEndIncluding?
-                        # if version.parse(v_excluding) > version.parse(self.version):
-                            # print(cpe)
-                    # else:
-                        # # remove from queryset
-                        # pass
-                        
-        # or contains cpe:2.3:a:apache:http_server:*:*:*:*:*:*:*:* and versionEndIncluding is less than float(version)
         return result
 # NIST choicest models--------------------------------------------------------------------END
 

@@ -1,0 +1,126 @@
+{% extends 'base.html' %}
+
+{% block sidebar %}
+<nav class="col-md-2 d-none d-md-block bg-light sidebar">
+<div class="sidebar-sticky">
+    <ul class="nav flex-column">
+        <li class="nav-item">
+        <a class="nav-link active" href="#">
+            <span data-feather="home"></span>
+            System Dash <span class="sr-only">(current)</span>
+        </a>
+        </li>
+        <li class="nav-item">
+        <a class="nav-link" href="#">
+            <span data-feather="file"></span>
+            Information Assets
+        </a>
+        </li>
+        <li class="nav-item">
+        <a class="nav-link" href="#">
+            <span data-feather="file"></span>
+            Roles
+        </a>
+        </li>
+        <li class="nav-item">
+        <a class="nav-link" href="#">
+            <span data-feather="file"></span>
+            Activities
+        </a>
+        </li>
+    </ul>
+</div>
+</nav>
+{% endblock %}
+{% block content %}
+        <main role="main" class="col-md-9 ml-sm-auto col-lg-10 pt-3 px-4">
+          <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pb-2 mb-3 border-bottom">
+            <h1 class="h2">{{ system.name }}</h1>
+            <div class="btn-toolbar mb-2 mb-md-0">
+              <div class="btn-group mr-2">
+                <button class="btn btn-sm btn-outline-secondary">Share</button>
+                <button class="btn btn-sm btn-outline-secondary">Export</button>
+              </div>
+              <button class="btn btn-sm btn-outline-secondary dropdown-toggle">
+                <span data-feather="calendar"></span>
+                This week
+              </button>
+            </div>
+          </div>
+
+
+        <h2>Vulnerability Stats</h2>
+          <div class="table-responsive">
+            <table class="table table-striped table-sm">
+              <thead>
+                <tr>
+                  <th>Vuln Location</th>
+                  <th>#</th>
+                  <th>Avg. Severity</th>
+                  <th># Mitigated</th>
+                  <th>empty</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <th>Hardware</th>
+                  <td>{{ system.name }}</td>
+                  <td>{{ system.description }}</td>
+                  <td>ipsum</td>
+                  <td>{{ system.is_third_party }}</td>
+                </tr>
+                <tr>
+                  <th>Application</th>
+                  <td>amet</td>
+                  <td>consectetur</td>
+                  <td>adipiscing</td>
+                  <td>elit</td>
+                </tr>
+                <tr>
+                  <th>OS</th>
+                  <td>amet</td>
+                  <td>consectetur</td>
+                  <td>adipiscing</td>
+                  <td>elit</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+
+
+        <h2>System Hardware</h2>
+          <div class="table-responsive">
+            <table class="table table-striped table-sm">
+              <thead>
+                <tr>
+                  <th>#</th>
+                  <th>Name</th>
+                  <th>Description</th>
+                  <th>Operating System</th>
+                  <th>Network Location</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td>Hardware1</td>
+                  <td>{{ system.name }}</td>
+                  <td>{{ system.description }}</td>
+                  <td>ipsum</td>
+                  <td>{{ system.is_third_party }}</td>
+                </tr>
+                <tr>
+                  <th>Hardware Applications</th>
+                  <td>App Name</td>
+                  <td># Vulns</td>
+                  <td>Avg. Severity</td>
+                  <td># Mitigated</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+
+
+        </main>
+      </div>
+    </div>
+{% endblock %}
