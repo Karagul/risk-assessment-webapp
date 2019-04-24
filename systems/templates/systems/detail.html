@@ -5,9 +5,9 @@
 <div class="sidebar-sticky">
     <ul class="nav flex-column">
         <li class="nav-item">
-        <a class="nav-link active" href="#">
+        <a class="nav-link active" href="{% url 'systems:index' %}">
             <span data-feather="home"></span>
-            System Dash <span class="sr-only">(current)</span>
+            Home <span class="sr-only">(current)</span>
         </a>
         </li>
         <li class="nav-item">
@@ -54,7 +54,7 @@
             <table class="table table-striped table-sm">
               <thead>
                 <tr>
-                  <th>Vuln Location</th>
+                  <th>Location</th>
                   <th>#</th>
                   <th>Avg. Severity</th>
                   <th># Mitigated</th>
@@ -64,10 +64,10 @@
               <tbody>
                 <tr>
                   <th>Hardware</th>
-                  <td>{{ system.name }}</td>
-                  <td>{{ system.description }}</td>
-                  <td>ipsum</td>
-                  <td>{{ system.is_third_party }}</td>
+                  <td>num vulns here</td>
+                  <td>avg severity here</td>
+                  <td>mitigated here</td>
+                  <td></td>
                 </tr>
                 <tr>
                   <th>Application</th>
@@ -101,20 +101,50 @@
                 </tr>
               </thead>
               <tbody>
+              {% if system.hardware.exists %}
+              {% for hardware in system.hardware.all %}
                 <tr>
-                  <td>Hardware1</td>
-                  <td>{{ system.name }}</td>
-                  <td>{{ system.description }}</td>
-                  <td>ipsum</td>
-                  <td>{{ system.is_third_party }}</td>
+                  <td>{{ forloop.counter }}</td>
+                  <td>{{ hardware.label }}</td>
+                  <td>{{ hardware.description }}</td>
+                  <td>{{ hardware.operating_system }}</td>
+                  <td>stuff </td>
+                  <td></td>
                 </tr>
                 <tr>
-                  <th>Hardware Applications</th>
-                  <td>App Name</td>
-                  <td># Vulns</td>
+                  <th>Hardware OS</th>
+                  <th>OS Name</th>
+                  <th># Vulns</th>
+                  <th>Avg. Severity</th>
+                  <th># Reviewed</th>
+                </tr>
+                <tr>
+                  <td>-</td>
+                  <td>{{ hardware.operating_system.label }}</td>
+                  <td>{{ hardware.operating_system.vulnerability.count }}</td>
                   <td>Avg. Severity</td>
-                  <td># Mitigated</td>
+                  <td># Reviewed</td>
                 </tr>
+                <tr>
+                  <th>OS Applications</th>
+                  <th>App Name</th>
+                  <th># Vulns</th>
+                  <th>Avg. Severity</th>
+                  <th># Mitigated</th>
+                </tr>
+                {% if hardware.application_set.exists %}
+                {% for application in hardware.application_set.all %}
+                <tr>
+                  <th>-</th>
+                  <td>{{ application.label }}</td>
+                  <td>{{ application.vulnerability.count }}</td>
+                  <th>Avg. Severity</th>
+                  <th># Mitigated</th>
+                </tr>
+                {% endfor %}
+                {% endif %}
+              {% endfor %}
+              {% endif %}
               </tbody>
             </table>
           </div>
