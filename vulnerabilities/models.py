@@ -33,6 +33,15 @@ class Vulnerability(models.Model):
 
     def __str__(self):
         return str(self.cve_json['id'] + ' - ' + self.cve_json['summary'])
+    
+    def severity_available(self):
+        cve_id = self.cve_json['id']
+        local_q = NISTCVE.objects.filter(cve_id=cve_id)
+        if local_q:
+            local_q = local_q.first()
+            print(local_q)
+
+        return True
 
     # def get_application_vulns(self, application):
         # """ Takes app as argument and returns JSON for CVEs related to apps """
@@ -123,15 +132,13 @@ class NISTCVE(models.Model):
                 # print(cve['cve']['description']['description_data'][0]['value'])
                 # print(cve['publishedDate'])
                 # print(cve['lastModifiedDate'])
-                cve_obj, created = NISTCVE.objects.get_or_create(
+                cve_obj = NISTCVE.objects.create(
                     cve_id=cve['cve']['CVE_data_meta']['ID'],
                     description=cve['cve']['description']['description_data'][0]['value'],
                     date_published=cve['publishedDate'],
                     date_modified=cve['lastModifiedDate'],
                 )
-                if created:
-                    # print('added cve: ', cve_obj)
-                    cve_created_count += 1
+                cve_created_count += 1
 
                 # print('')
                 # print('REFERENCES')
@@ -141,15 +148,13 @@ class NISTCVE(models.Model):
                     # print('     URL: ', reference['url'])
                     # print('     NAME: ', reference['name'])
                     # print('     SOURCE: ', reference['refsource'])
-                    reference_obj, created = CVEReference.objects.get_or_create(
+                    reference_obj = CVEReference.objects.create(
                         url=reference['url'],
                         name=reference['name'],
                         source=reference['refsource'],
                         cve=cve_obj
                     )
-                    if created:
-                        # print('added reference obj: ', reference_obj)
-                        reference_created_count += 1
+                    reference_created_count += 1
 
                 # print('')
                 # print('CONFIGS')
@@ -176,29 +181,28 @@ class NISTCVE(models.Model):
                 # print('IMPACT')
                 if 'baseMetricV3' in cve['impact'].keys():
                     # print('     BASEMETRICV3: ', cve['impact']['baseMetricV3'])
-                    impact_obj, created = CVEV3Impact.objects.get_or_create(
-                        vector_string=cve['impact']['baseMetricV3']['cvssV3']['vectorString'],
-                        attack_vector=cve['impact']['baseMetricV3']['cvssV3']['attackVector'],
-                        attack_complexity=cve['impact']['baseMetricV3']['cvssV3']['attackComplexity'],
-                        privileges_required=cve['impact']['baseMetricV3']['cvssV3']['privilegesRequired'],
-                        user_interaction=cve['impact']['baseMetricV3']['cvssV3']['userInteraction'],
-                        scope=cve['impact']['baseMetricV3']['cvssV3']['scope'],
-                        confidentiality_impact=cve['impact']['baseMetricV3']['cvssV3']['confidentialityImpact'],
-                        integrity_impact=cve['impact']['baseMetricV3']['cvssV3']['integrityImpact'],
-                        availability_impact=cve['impact']['baseMetricV3']['cvssV3']['availabilityImpact'],
-                        base_score=cve['impact']['baseMetricV3']['cvssV3']['baseScore'],
-                        base_severity=cve['impact']['baseMetricV3']['cvssV3']['baseSeverity'],
-                        # the rest
-                        exploitability_score=cve['impact']['baseMetricV3']['exploitabilityScore'],
-                        impact_score=cve['impact']['baseMetricV3']['impactScore'],
+                    impact_obj = CVEV3Impact.objects.create(
+                        # vector_string=cve['impact']['baseMetricV3']['cvssV3']['vectorString'],
+                        # attack_vector=cve['impact']['baseMetricV3']['cvssV3']['attackVector'],
+                        # attack_complexity=cve['impact']['baseMetricV3']['cvssV3']['attackComplexity'],
+                        # privileges_required=cve['impact']['baseMetricV3']['cvssV3']['privilegesRequired'],
+                        # user_interaction=cve['impact']['baseMetricV3']['cvssV3']['userInteraction'],
+                        # scope=cve['impact']['baseMetricV3']['cvssV3']['scope'],
+                        # confidentiality_impact=cve['impact']['baseMetricV3']['cvssV3']['confidentialityImpact'],
+                        # integrity_impact=cve['impact']['baseMetricV3']['cvssV3']['integrityImpact'],
+                        # availability_impact=cve['impact']['baseMetricV3']['cvssV3']['availabilityImpact'],
+                        # base_score=cve['impact']['baseMetricV3']['cvssV3']['baseScore'],
+                        # base_severity=cve['impact']['baseMetricV3']['cvssV3']['baseSeverity'],
+                        # # the rest
+                        # exploitability_score=cve['impact']['baseMetricV3']['exploitabilityScore'],
+                        # impact_score=cve['impact']['baseMetricV3']['impactScore'],
+                        v3_impact_json=cve['impact']['baseMetricV3'],
                         cve=cve_obj
                     )
-                    if created:
-                        # print('Added baseMetricV3: ', impact_obj.vector_string)
-                        impact_created_count += 1
+                    impact_created_count += 1
                 elif 'baseMetricV2' in cve['impact'].keys():
                     # print('     BASEMETRICV2: ', cve['impact']['baseMetricV2'])
-                    impact_obj, created = CVEV2Impact.objects.get_or_create(
+                    impact_obj = CVEV2Impact.objects.create(
                         # vector_string=cve['impact']['baseMetricV2']['cvssV2']['vectorString'],
                         # access_vector=cve['impact']['baseMetricV2']['cvssV2']['accessVector'],
                         # access_complexity=cve['impact']['baseMetricV2']['cvssV2']['accessComplexity'],
@@ -219,9 +223,7 @@ class NISTCVE(models.Model):
                         v2_impact_json=cve['impact']['baseMetricV2'],
                         cve=cve_obj
                     )
-                    if created:
-                        # print('Added baseMetricV2: ', impact_obj.vector_string)
-                        impact_created_count += 1
+                    impact_created_count += 1
                 else:
                     # print('     NONE')
                     pass
@@ -284,28 +286,29 @@ class CVEReference(models.Model):
 
 class CVEV3Impact(models.Model):
     # cvssV3
-    vector_string = models.CharField(max_length=455)
-    attack_vector = models.CharField(max_length=455)
-    attack_complexity = models.CharField(max_length=455)
-    privileges_required = models.CharField(max_length=455)
-    user_interaction = models.CharField(max_length=455)
-    scope = models.CharField(max_length=455)
-    confidentiality_impact = models.CharField(max_length=455)
-    integrity_impact = models.CharField(max_length=455)
-    availability_impact = models.CharField(max_length=455)
-    base_score = models.CharField(max_length=455)
-    base_severity = models.CharField(max_length=455)
-    # the rest
-    exploitability_score = models.CharField(max_length=455)
-    impact_score = models.CharField(max_length=455)
+    # vector_string = models.CharField(max_length=455)
+    # attack_vector = models.CharField(max_length=455)
+    # attack_complexity = models.CharField(max_length=455)
+    # privileges_required = models.CharField(max_length=455)
+    # user_interaction = models.CharField(max_length=455)
+    # scope = models.CharField(max_length=455)
+    # confidentiality_impact = models.CharField(max_length=455)
+    # integrity_impact = models.CharField(max_length=455)
+    # availability_impact = models.CharField(max_length=455)
+    # base_score = models.CharField(max_length=455)
+    # base_severity = models.CharField(max_length=455)
+    # # the rest
+    # exploitability_score = models.CharField(max_length=455)
+    # impact_score = models.CharField(max_length=455)
+    v3_impact_json = JSONField()
 
     # Foreign keys
-    cve = models.OneToOneField(NISTCVE, on_delete=models.CASCADE)
+    cve = models.ForeignKey(NISTCVE, on_delete=models.CASCADE)
     class Meta:
         db_table = 'cvev3_impact'
 
     def __str__(self):
-        return self.vector_string
+        return str(self.v3_impact_json)
 class CVEV2Impact(models.Model):
     # cvssv2
     # vector_string = models.CharField(max_length=455)
@@ -328,7 +331,7 @@ class CVEV2Impact(models.Model):
     v2_impact_json = JSONField()
 
     # Foreign keys
-    cve = models.OneToOneField(NISTCVE, on_delete=models.CASCADE)
+    cve = models.ForeignKey(NISTCVE, on_delete=models.CASCADE)
     
     class Meta:
         db_table = 'cvev2_impact'

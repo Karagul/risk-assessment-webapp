@@ -1,8 +1,11 @@
 from django.urls import path
 
-from .views import ApplicationAutocomplete
+
+from . import views
 
 app_name = 'applications'
 urlpatterns = [
-    path('application-autocomplete/', ApplicationAutocomplete.as_view(), name='application-autocomplete'),
+    path('', views.IndexView.as_view(), name='index'),
+    path('<int:pk>/', views.DetailView.as_view(), name='detail'),
+    path('application-autocomplete/', views.ApplicationAutocomplete.as_view(), name='application-autocomplete'),
 ]

@@ -211,6 +211,7 @@ class Hardware(models.Model):
     hardware = models.ForeignKey(NISTHardwareOption, on_delete=models.CASCADE)
     # Foreign keys
     operating_system = models.ForeignKey(OperatingSystem, on_delete=models.CASCADE)
+    vulnerability = models.ManyToManyField(Vulnerability)
 
     class Meta:
         db_table = 'hardware'
