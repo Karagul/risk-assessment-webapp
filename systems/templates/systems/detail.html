@@ -105,7 +105,7 @@
               {% for hardware in system.hardware.all %}
                 <tr>
                   <td>{{ forloop.counter }}</td>
-                  <td>{{ hardware.label }}</td>
+                  <td><a href="{% url 'hardware:detail' hardware.id %}">{{ hardware.label }}</a></td>
                   <td>{{ hardware.description }}</td>
                   <td>{{ hardware.operating_system }}</td>
                   <td>stuff </td>
@@ -136,7 +136,7 @@
                 {% for application in hardware.application_set.all %}
                 <tr>
                   <th>-</th>
-                  <td>{{ application.label }}</td>
+                  <td><a href="{% url 'applications:detail' application.id %}">{{ application.label }}</a></td>
                   <td>{{ application.vulnerability.count }}</td>
                   <th>Avg. Severity</th>
                   <th># Mitigated</th>

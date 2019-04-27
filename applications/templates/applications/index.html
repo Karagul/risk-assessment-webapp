@@ -79,8 +79,8 @@
                   <td>{{forloop.counter}}</td>
                   <td><a href="{% url 'applications:detail' application.id %}" >{{ application.label }}</a></td>
                   <td>{{ application.description }}</td>
-                  <td></td>
-                  <td>{% for hardware in application.hardware.all %}{{ hardware }}{% endfor %}</td>
+                  <td>{% for hardware in application.hardware.all %}{{ hardware }}</td>
+                  <td>{{ hardware.operating_system }}</td>{% endfor %}
                 </tr>
               {% endfor %}
                 <tr>

@@ -34,37 +34,29 @@ class Vulnerability(models.Model):
     def __str__(self):
         return str(self.cve_json['id'] + ' - ' + self.cve_json['summary'])
     
-    def severity_available(self):
+    def cvss_getter(self):
         cve_id = self.cve_json['id']
         local_q = NISTCVE.objects.filter(cve_id=cve_id)
         if local_q:
             local_q = local_q.first()
-            print(local_q)
+            if local_q.cvev3impact_set.exists():
+                return local_q.cvev3impact_set.first()
+            elif local_q.CVEV2Impact.exists():
+                return local_q.cvev2impact_set.first()
+            else:
+                return 'None Available'
 
-        return True
+        return 'None Available'
 
-    # def get_application_vulns(self, application):
-        # """ Takes app as argument and returns JSON for CVEs related to apps """
-        # # get related NIST obj of passed app
-        # # app_nist_cpe = application.application
-        # # query NISTCVE for matching cpe entries
-        # # app_cpe = app_nist_entry.json_data['configurations']['nodes'][0]['cpe_match'][0]['cpe23Uri']
-        # # app_cpe = 'cpe:2.3:a:' + str(app_nist_cpe.vendor) + ':' + app_nist_cpe.product + ':' + app_nist_cpe.version
+    def get_impact_score(self):
+        impact = self.cvss_getter()
+        return impact.v3_impact_json.get('impactScore', 'None Available')
 
-        # # query for matching cves
-        # # vuln_q = NISTCVE.objects.filter(json_data__configurations__nodes__0__cpe_match__0__cpe23Uri=str(app.application))
-        # # vuln_q = NISTCVE.objects.filter(json_data__configurations__nodes__0__cpe_match__0__cpe23Uri__icontains=str(app.application))
+    def get_exploitability_score(self):
+        impact = self.cvss_getter()
+        return impact.v3_impact_json.get('exploitabilityScore', 'None Available')
 
-        # cve_json = None
-        # return cve_json
-    # def get_hardware_vulns(self, hardware):
-        # """ Takes hardware as argument and returns JSON for CVEs related to hardware """
-        # cve_json = None
-        # return cve_json
-    # def get_os_vulns(self, os):
-        # """ Takes os as argument and returns JSON for CVEs related to os """
-        # cve_json = None
-        # return cve_json
+
 
 class VulnerableCPE(models.Model):
     cpe_json = JSONField()
