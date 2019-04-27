@@ -20,5 +20,8 @@ urlpatterns = [
     path('hardware/', include('hardware.urls')),
     path('applications/', include('applications.urls')),
     path('systems/', include('systems.urls')),
+    path('infoassets/', include('infoassets.urls')),
+    path('roles/', include('roles.urls')),
+    path('activities/', include('activities.urls')),
     path('admin/', admin.site.urls),
 ]

@@ -64,14 +64,14 @@
           <div class="row">
           <p>Description: {{ hardware.description }}<br />
           Notes: {{ hardware.note }}<br />
-          CPE: {{ hardware.cpe_string }}<br />
+          CPE: {{ hardware.hardware }}<br />
           Vendor: {{ hardware.vendor }}<br />
           Operating System: <a href="{% url 'hardware:os_detail' hardware.operating_system.id %}">{{ hardware.operating_system }}</a></p>
           
 
           </div>
 
-        <h2>Business Activities Impacted</h2>
+        <h2>Apps/Business Activities Impacted</h2>
           <div class="table-responsive">
             <table class="table table-striped table-sm">
               <thead>
@@ -115,7 +115,7 @@
           </div>
 
 
-        <h2>Vulnerabilities</h2>
+        <h2>Hardware Vulnerabilities</h2>
           <div class="table-responsive">
             <table class="table table-striped table-sm">
               <thead>
@@ -137,6 +137,46 @@
                   <td></td>
                 </tr>
               {% endfor %}
+              </tbody>
+            </table>
+          </div>
+
+        <h2>OS Vulnerabilities</h2>
+          <div class="table-responsive">
+            <table class="table table-striped table-sm">
+              <thead>
+                <tr>
+                  <th>#</th>
+                  <th>CVE ID</th>
+                  <th>Version</th>
+                  <th></th>
+                  <th></th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <th>{{ hardware.operating_system.label }}</th>
+                  <td>{{ hardware.operating_system.description }}</td>
+                  <td>{{ hardware.operating_system.operating_system }}</td>
+                  <td></td>
+                  <td></td>
+                </tr>
+                <tr>
+                  <th>Vulns</th>
+                  <th>CVE ID</th>
+                  <th>Description</th>
+                  <th>Un-Adjusted Impact</th>
+                  <th>Exploitability</th>
+                </tr>
+                {% for vulnerability in hardware.operating_system.vulnerability.all %}
+                <tr>
+                  <th>{{ forloop.counter }}</th>
+                  <td>{{ vulnerability.cve_json.id }}</td>
+                  <td>{{ vulnerability.cve_json.summary }}</td>
+                  <td>{{ vulnerability.get_impact_score }}</td>
+                  <td>{{ vulnerability.get_exploitability_score }}</td>
+                </tr>
+                {% endfor %}
               </tbody>
             </table>
           </div>

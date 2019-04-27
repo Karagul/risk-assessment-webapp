@@ -108,7 +108,23 @@ class NISTHardwareOption(models.Model):
         db_table = 'nist_hardware_option'
 
     def __str__(self):
-        return str(self.product + ' ' + self.version + ' ' + self.update)
+        return str('cpe:2.3:h:' + str(self.vendor) + ':' + self.product + ':' + self.version + ':' + self.update + ':' + self.edition + ':' + self.language + ':' + self.sw_edition + ':' + self.target_sw + ':' + self.target_hw + ':' + self.other)
+
+    def get_cves(self):
+        from packaging import version
+        from ares import CVESearch
+        # use product and version to search via api
+        # get cve ids from response
+        # query local db for cve_id
+        # 
+        # return
+        base_url = 'https://cve.circl.lu/api/cvefor/'
+        cpe_string = 'cpe:2.3:h:' + str(self.vendor) + ':' + self.product + ':' + self.version
+        
+        cve = CVESearch()
+        # result = cve.search(str(self.vendor) + '/' + self.product)
+        result = cve.cvefor(base_url + cpe_string)
+        return result
 
 class NISTOperatingSystemOption(models.Model):
     product = models.CharField(max_length=255)
@@ -133,7 +149,6 @@ class NISTOperatingSystemOption(models.Model):
     def get_cves(self):
         from packaging import version
         from ares import CVESearch
-        v = None
         # use product and version to search via api
         # get cve ids from response
         # query local db for cve_id
@@ -218,3 +233,17 @@ class Hardware(models.Model):
 
     def __str__(self):
         return self.label
+
+    def cve_getter(self):
+        cve_dict = self.hardware.get_cves()
+        for cve in cve_dict:
+            # print(cve['Modified'])
+            # print(cve['Published'])
+            # print(cve['id'])
+            # print(cve['summary'])
+            vuln, created = Vulnerability.objects.get_or_create(
+                cve_json=cve
+            )
+            self.vulnerability.add(vuln)
+
+        return True

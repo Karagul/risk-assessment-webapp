@@ -41,7 +41,7 @@ class Vulnerability(models.Model):
             local_q = local_q.first()
             if local_q.cvev3impact_set.exists():
                 return local_q.cvev3impact_set.first()
-            elif local_q.CVEV2Impact.exists():
+            elif local_q.cvev2impact_set.exists():
                 return local_q.cvev2impact_set.first()
             else:
                 return 'None Available'
@@ -50,11 +50,12 @@ class Vulnerability(models.Model):
 
     def get_impact_score(self):
         impact = self.cvss_getter()
-        return impact.v3_impact_json.get('impactScore', 'None Available')
+        impact_score = impact.impact_json.get('impactScore', 'None Available')
+        return impact_score
 
     def get_exploitability_score(self):
         impact = self.cvss_getter()
-        return impact.v3_impact_json.get('exploitabilityScore', 'None Available')
+        return impact.impact_json.get('exploitabilityScore', 'None Available')
 
 
 
@@ -188,7 +189,7 @@ class NISTCVE(models.Model):
                         # # the rest
                         # exploitability_score=cve['impact']['baseMetricV3']['exploitabilityScore'],
                         # impact_score=cve['impact']['baseMetricV3']['impactScore'],
-                        v3_impact_json=cve['impact']['baseMetricV3'],
+                        impact_json=cve['impact']['baseMetricV3'],
                         cve=cve_obj
                     )
                     impact_created_count += 1
@@ -212,7 +213,7 @@ class NISTCVE(models.Model):
                         # obtain_user_privilege=cve['impact']['baseMetricV2']['obtainUserPrivilege'],
                         # obtain_other_privilege=cve['impact']['baseMetricV2']['obtainOtherPrivilege'],
                         # user_interaction_required=cve['impact']['baseMetricV2']['userInteractionRequired'],
-                        v2_impact_json=cve['impact']['baseMetricV2'],
+                        impact_json=cve['impact']['baseMetricV2'],
                         cve=cve_obj
                     )
                     impact_created_count += 1
@@ -292,7 +293,7 @@ class CVEV3Impact(models.Model):
     # # the rest
     # exploitability_score = models.CharField(max_length=455)
     # impact_score = models.CharField(max_length=455)
-    v3_impact_json = JSONField()
+    impact_json = JSONField()
 
     # Foreign keys
     cve = models.ForeignKey(NISTCVE, on_delete=models.CASCADE)
@@ -300,7 +301,7 @@ class CVEV3Impact(models.Model):
         db_table = 'cvev3_impact'
 
     def __str__(self):
-        return str(self.v3_impact_json)
+        return str(self.impact_json)
 class CVEV2Impact(models.Model):
     # cvssv2
     # vector_string = models.CharField(max_length=455)
@@ -320,7 +321,7 @@ class CVEV2Impact(models.Model):
     # obtain_user_privilege = models.CharField(max_length=455)
     # obtain_other_privilege = models.CharField(max_length=455)
     # user_interaction_required = models.CharField(max_length=455)
-    v2_impact_json = JSONField()
+    impact_json = JSONField()
 
     # Foreign keys
     cve = models.ForeignKey(NISTCVE, on_delete=models.CASCADE)
@@ -329,4 +330,4 @@ class CVEV2Impact(models.Model):
         db_table = 'cvev2_impact'
 
     def __str__(self):
-        return str(self.v2_impact_json)
+        return str(self.impact_json)

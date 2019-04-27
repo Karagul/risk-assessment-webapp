@@ -23,19 +23,19 @@
         </a>
         </li>
         <li class="nav-item">
-        <a class="nav-link" href="#">
+        <a class="nav-link" href="{% url 'infoassets:index' %}">
             <span data-feather="file"></span>
             Information Assets
         </a>
         </li>
         <li class="nav-item">
-        <a class="nav-link" href="#">
+        <a class="nav-link" href="{% url 'roles:index' %}">
             <span data-feather="file"></span>
             Roles
         </a>
         </li>
         <li class="nav-item">
-        <a class="nav-link" href="#">
+        <a class="nav-link" href="{% url 'activities:index' %}">
             <span data-feather="file"></span>
             Activities
         </a>
@@ -68,8 +68,8 @@
                   <th>#</th>
                   <th>Application Name</th>
                   <th>Application Description</th>
-                  <th>OS</th>
-                  <th>Hardware</th>
+                  <th>Version</th>
+                  <th>Hardware/OS</th>
                   <th>System</th>
                 </tr>
               </thead>
@@ -79,17 +79,11 @@
                   <td>{{forloop.counter}}</td>
                   <td><a href="{% url 'applications:detail' application.id %}" >{{ application.label }}</a></td>
                   <td>{{ application.description }}</td>
-                  <td>{% for hardware in application.hardware.all %}{{ hardware }}</td>
-                  <td>{{ hardware.operating_system }}</td>{% endfor %}
+                  <td>{{ application.application }}</td>
+                  <td>{% for hardware in application.hardware.all %}{{ hardware }}/{{ hardware.operating_system }}{% endfor %}</td>
+                  <td></td>
                 </tr>
               {% endfor %}
-                <tr>
-                  <td>1,002</td>
-                  <td>amet</td>
-                  <td>consectetur</td>
-                  <td>adipiscing</td>
-                  <td>elit</td>
-                </tr>
               </tbody>
             </table>
           </div>
