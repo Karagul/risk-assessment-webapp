@@ -84,7 +84,7 @@
                   <th>Description</th>
                   <th>Info Assets Used</th>
                   <th>Entities Performing Activity</th>
-                  <th>Monthly Value Earned</th>
+                  <th>Daily Value Earned</th>
                 </tr>
               </thead>
               <tbody>
@@ -95,7 +95,7 @@
                   <td>{{ activity.description }}</td>
                   <td>{% for asset in activity.info_asset_group.all %}{{ asset }},<br /> {% endfor %}</td>
                   <td>{% for role in activity.system_role.all %}{{ role }},<br /> {% endfor %}</td>
-                  <td>${{ activity.monthly_value }}</td>
+                  <td>${{ activity.daily_value }}</td>
                 </tr>
               {% endfor %}
               </tbody>

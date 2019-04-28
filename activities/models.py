@@ -23,7 +23,7 @@ class SystemActivity(models.Model):
     name = models.CharField(max_length=255)
     description = models.TextField(max_length=255)
     note = models.TextField(max_length=255)
-    monthly_value = models.DecimalField(max_digits=12, decimal_places=2)
+    daily_value = models.DecimalField(max_digits=12, decimal_places=2)
     # Foreign keys
     business_activity = models.ForeignKey(BusinessActivity, on_delete=models.CASCADE, blank=True, null=True)
     system_role = models.ManyToManyField(SystemRole)
