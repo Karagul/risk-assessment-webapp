@@ -7,13 +7,13 @@
         <li class="nav-item">
         <a class="nav-link" href="{% url 'systems:index' %}">
             <span data-feather="home"></span>
-            Systems 
+            Systems
         </a>
         </li>
         <li class="nav-item">
         <a class="nav-link active" href="{% url 'hardware:index' %}">
             <span data-feather="file"></span>
-            Hardware/OS <span class="sr-only">(current)</span>
+            Hardware/OS<span class="sr-only">(current)</span> 
         </a>
         </li>
         <li class="nav-item">
@@ -23,19 +23,19 @@
         </a>
         </li>
         <li class="nav-item">
-        <a class="nav-link" href="#">
+        <a class="nav-link" href="{% url 'infoassets:index' %}">
             <span data-feather="file"></span>
-            Information Assets
+            Information Assets 
         </a>
         </li>
         <li class="nav-item">
-        <a class="nav-link" href="#">
+        <a class="nav-link" href="{% url 'roles:index' %}">
             <span data-feather="file"></span>
             Roles
         </a>
         </li>
         <li class="nav-item">
-        <a class="nav-link" href="#">
+        <a class="nav-link active" href="{% url 'activities:index' %}">
             <span data-feather="file"></span>
             Activities
         </a>
@@ -44,6 +44,7 @@
 </div>
 </nav>
 {% endblock %}
+
 {% block content %}
         <main role="main" class="col-md-9 ml-sm-auto col-lg-10 pt-3 px-4">
           <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pb-2 mb-3 border-bottom">
@@ -66,7 +67,7 @@
           Notes: {{ hardware.note }}<br />
           CPE: {{ hardware.hardware }}<br />
           Vendor: {{ hardware.vendor }}<br />
-          Operating System: <a href="{% url 'hardware:os_detail' hardware.operating_system.id %}">{{ hardware.operating_system }}</a></p>
+          Operating System: {{ hardware.operating_system }}</p>
           
 
           </div>
@@ -86,7 +87,7 @@
               <tbody>
           {% for application in hardware.application_set.all %}
                 <tr>
-                  <td>{{ application }}</td>
+                  <td><a href="{% url 'applications:detail' application.id %}">{{ application }}</a></td>
                   <td>{{ application.description }}</td>
                   <td>{{ application.application }}</td>
                   <td>{{ application.vulnerability.count }}</td>

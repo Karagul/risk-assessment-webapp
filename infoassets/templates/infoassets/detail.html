@@ -7,23 +7,35 @@
         <li class="nav-item">
         <a class="nav-link" href="{% url 'systems:index' %}">
             <span data-feather="home"></span>
-            Systems 
+            Systems
         </a>
         </li>
         <li class="nav-item">
-        <a class="nav-link active" href="#">
+        <a class="nav-link active" href="{% url 'hardware:index' %}">
             <span data-feather="file"></span>
-            Information Assets<span class="sr-only">(current)</span>
+            Hardware/OS
         </a>
         </li>
         <li class="nav-item">
-        <a class="nav-link" href="#">
+        <a class="nav-link" href="{% url 'applications:index' %}">
+            <span data-feather="file"></span>
+            Applications
+        </a>
+        </li>
+        <li class="nav-item">
+        <a class="nav-link active" href="{% url 'infoassets:index' %}">
+            <span data-feather="file"></span>
+            Information Assets<span class="sr-only">(current)</span>  
+        </a>
+        </li>
+        <li class="nav-item">
+        <a class="nav-link" href="{% url 'roles:index' %}">
             <span data-feather="file"></span>
             Roles
         </a>
         </li>
         <li class="nav-item">
-        <a class="nav-link" href="#">
+        <a class="nav-link active" href="{% url 'activities:index' %}">
             <span data-feather="file"></span>
             Activities
         </a>
@@ -32,6 +44,8 @@
 </div>
 </nav>
 {% endblock %}
+
+
 {% block content %}
         <main role="main" class="col-md-9 ml-sm-auto col-lg-10 pt-3 px-4">
           <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pb-2 mb-3 border-bottom">
@@ -75,7 +89,7 @@
                   <td><a href="{% url 'activities:detail' activity.id %}">{{ activity }}</a></td>
                   <td><a href="{% url 'systems:detail' role.system.id %}">{{ role.system }}</a></td>
                   <td>{{ role }}</td>
-                  <td></td>
+                  <td>{{ role.system.vuln_count }}</td>
                 </tr>
               {% endfor %}
               {% endfor %}

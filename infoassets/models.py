@@ -37,3 +37,21 @@ class InfoAssetGroup(models.Model):
 
     def __str__(self):
         return self.label
+    
+    def num_vulns_impacting(self):
+        """ get count of vulns where this data is present """
+        vuln_count = 0
+        system_list = []
+        activities = self.systemactivity_set.all()
+
+        # get list of systems
+        for activity in activities:
+            roles = activity.system_role.all()
+            for role in roles:
+                system_list.append(role.system)
+        
+        # sum vuln_counts
+        for system in set(system_list):
+            vuln_count += system.vuln_count
+
+        return vuln_count

@@ -7,7 +7,7 @@
         <li class="nav-item">
         <a class="nav-link" href="{% url 'systems:index' %}">
             <span data-feather="home"></span>
-            Systems 
+            Systems
         </a>
         </li>
         <li class="nav-item">
@@ -19,23 +19,23 @@
         <li class="nav-item">
         <a class="nav-link active" href="{% url 'applications:index' %}">
             <span data-feather="file"></span>
-            Applications <span class="sr-only">(current)</span>
+            Applications<span class="sr-only">(current)</span> 
         </a>
         </li>
         <li class="nav-item">
-        <a class="nav-link" href="#">
+        <a class="nav-link" href="{% url 'infoassets:index' %}">
             <span data-feather="file"></span>
-            Information Assets
+            Information Assets 
         </a>
         </li>
         <li class="nav-item">
-        <a class="nav-link" href="#">
+        <a class="nav-link" href="{% url 'roles:index' %}">
             <span data-feather="file"></span>
             Roles
         </a>
         </li>
         <li class="nav-item">
-        <a class="nav-link" href="#">
+        <a class="nav-link active" href="{% url 'activities:index' %}">
             <span data-feather="file"></span>
             Activities
         </a>
@@ -44,6 +44,8 @@
 </div>
 </nav>
 {% endblock %}
+
+
 {% block content %}
         <main role="main" class="col-md-9 ml-sm-auto col-lg-10 pt-3 px-4">
           <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pb-2 mb-3 border-bottom">
@@ -100,7 +102,7 @@
             </table>
           </div>
 
-        <h2>Vulnerabilities</h2>
+        <h2>Vulnerabilities ({{application.vulnerability.count }})</h2>
           <div class="table-responsive">
             <table class="table table-striped table-sm">
               <thead>

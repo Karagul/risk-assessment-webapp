@@ -81,6 +81,16 @@ class Application(models.Model):
 
     def __str__(self):
         return self.label
+    
+    @property
+    def highest_vuln_severity(self):
+        severity_high = 0
+        vulns = self.vulnerability.all()
+        for vuln in vulns:
+            vuln_impact = vuln.get_impact_score()
+            if vuln_impact > severity_high:
+                severity_high = vuln_impact
+        return severity_high
 
     def cve_getter(self):
         cve_dict = self.application.get_cves()

@@ -7,23 +7,35 @@
         <li class="nav-item">
         <a class="nav-link active" href="{% url 'systems:index' %}">
             <span data-feather="home"></span>
-            Systems <span class="sr-only">(current)</span>
+            Systems<span class="sr-only">(current)</span>
         </a>
         </li>
         <li class="nav-item">
-        <a class="nav-link" href="#">
+        <a class="nav-link" href="{% url 'hardware:index' %}">
             <span data-feather="file"></span>
-            Information Assets
+            Hardware/OS 
         </a>
         </li>
         <li class="nav-item">
-        <a class="nav-link" href="#">
+        <a class="nav-link" href="{% url 'applications:index' %}">
+            <span data-feather="file"></span>
+            Applications
+        </a>
+        </li>
+        <li class="nav-item">
+        <a class="nav-link" href="{% url 'infoassets:index' %}">
+            <span data-feather="file"></span>
+            Information Assets 
+        </a>
+        </li>
+        <li class="nav-item">
+        <a class="nav-link" href="{% url 'roles:index' %}">
             <span data-feather="file"></span>
             Roles
         </a>
         </li>
         <li class="nav-item">
-        <a class="nav-link" href="#">
+        <a class="nav-link active" href="{% url 'activities:index' %}">
             <span data-feather="file"></span>
             Activities
         </a>
@@ -58,33 +70,21 @@
               <thead>
                 <tr>
                   <th>Location</th>
-                  <th>#</th>
-                  <th>Avg. Severity</th>
-                  <th># Mitigated</th>
-                  <th>empty</th>
+                  <th># Vulns</th>
                 </tr>
               </thead>
               <tbody>
                 <tr>
                   <th>Hardware</th>
-                  <td></td>
-                  <td>avg severity here</td>
-                  <td>mitigated here</td>
-                  <td></td>
+                  <td>{{ system.hardware_vuln_count }}</td>
                 </tr>
                 <tr>
                   <th>Application</th>
-                  <td>amet</td>
-                  <td>consectetur</td>
-                  <td>adipiscing</td>
-                  <td>elit</td>
+                  <td>{{ system.apps_vuln_count }}</td>
                 </tr>
                 <tr>
                   <th>OS</th>
-                  <td>amet</td>
-                  <td>consectetur</td>
-                  <td>adipiscing</td>
-                  <td>elit</td>
+                  <td>{{ system.os_vuln_count }}</td>
                 </tr>
               </tbody>
             </table>
@@ -100,7 +100,7 @@
                   <th>Name</th>
                   <th>Description</th>
                   <th>OS</th>
-                  <th># Vulns</th>
+                  <th>#</th>
                 </tr>
               </thead>
               <tbody>

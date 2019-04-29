@@ -79,7 +79,7 @@
                   <td><a href="{% url 'systems:detail' system.id %}" >{{ system.name }}</a></td>
                   <td>{{ system.description }}</td>
                   <td>{{ system.is_third_party }}</td>
-                  <td>ipsum</td>
+                  <td>{{ system.vuln_count }}</td>
                 </tr>
               {% endfor %}
               </tbody>
