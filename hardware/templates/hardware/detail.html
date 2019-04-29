@@ -71,7 +71,7 @@
 
           </div>
 
-        <h2>Apps/Business Activities Impacted</h2>
+        <h2>Hardware Apps</h2>
           <div class="table-responsive">
             <table class="table table-striped table-sm">
               <thead>
@@ -79,8 +79,7 @@
                   <th>Application</th>
                   <th>Description</th>
                   <th>Version</th>
-                  <th></th>
-                  <th></th>
+                  <th># Vulns</th>
                   <th></th>
                 </tr>
               </thead>
@@ -90,24 +89,7 @@
                   <td>{{ application }}</td>
                   <td>{{ application.description }}</td>
                   <td>{{ application.application }}</td>
-                </tr>
-                <tr>
-                  <th>App Activities</th>
-                  <th>Activity</th>
-                  <th>Description</th>
-                  <th>Info Assets Used</th>
-                  <th>Entities Performing Activity</th>
-                  <th>Monthly Value Earned</th>
-                </tr>
-                <tr>
-                  {% for activity in application.systemactivity_set.all %}
-                  <td>-</td>
-                  <td>{{ activity }}</td>
-                  <td>{{ activity.description }}</td>
-                  <td>{% for asset in activity.info_asset_group.all %}{{ asset }}, {% endfor %}</td>
-                  <td>{% for role in activity.system_role.all %}{{ role }}, {% endfor %}</td>
-                  <td>{{ activity.monthly_value }}</td>
-                  {% endfor %}
+                  <td>{{ application.vulnerability.count }}</td>
                 </tr>
               {% endfor %}
               </tbody>

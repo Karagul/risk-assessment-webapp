@@ -67,7 +67,7 @@
               <tbody>
                 <tr>
                   <th>Hardware</th>
-                  <td>num vulns here</td>
+                  <td></td>
                   <td>avg severity here</td>
                   <td>mitigated here</td>
                   <td></td>
@@ -99,8 +99,8 @@
                   <th>#</th>
                   <th>Name</th>
                   <th>Description</th>
-                  <th>Operating System</th>
-                  <th>Network Location</th>
+                  <th>OS</th>
+                  <th># Vulns</th>
                 </tr>
               </thead>
               <tbody>
@@ -111,38 +111,24 @@
                   <td><a href="{% url 'hardware:detail' hardware.id %}">{{ hardware.label }}</a></td>
                   <td>{{ hardware.description }}</td>
                   <td>{{ hardware.operating_system }}</td>
-                  <td>stuff </td>
+                  <td>{{ hardware.operating_system.vulnerability.count|add:hardware.vulnerability.count }}</td>
                   <td></td>
                 </tr>
                 <tr>
-                  <th>Hardware OS</th>
-                  <th>OS Name</th>
-                  <th># Vulns</th>
-                  <th>Avg. Severity</th>
-                  <th># Reviewed</th>
-                </tr>
-                <tr>
-                  <td>-</td>
-                  <td>{{ hardware.operating_system.label }}</td>
-                  <td>{{ hardware.operating_system.vulnerability.count }}</td>
-                  <td>Avg. Severity</td>
-                  <td># Reviewed</td>
-                </tr>
-                <tr>
-                  <th>OS Applications</th>
-                  <th>App Name</th>
-                  <th># Vulns</th>
-                  <th>Avg. Severity</th>
-                  <th># Mitigated</th>
+                  <th>-</th>
+                  <th>Hardware Apps</th>
+                  <th>App Description</th>
+                  <th></th>
+                  <th></th>
                 </tr>
                 {% if hardware.application_set.exists %}
                 {% for application in hardware.application_set.all %}
                 <tr>
                   <th>-</th>
                   <td><a href="{% url 'applications:detail' application.id %}">{{ application.label }}</a></td>
+                  <td>{{ application.description }}</td>
+                  <th></th>
                   <td>{{ application.vulnerability.count }}</td>
-                  <th>Avg. Severity</th>
-                  <th># Mitigated</th>
                 </tr>
                 {% endfor %}
                 {% endif %}

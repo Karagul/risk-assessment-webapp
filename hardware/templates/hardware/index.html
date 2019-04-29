@@ -79,7 +79,7 @@
                   <td><a href="{% url 'hardware:detail' hardware.id %}" >{{ hardware.label }}</a></td>
                   <td>{{ hardware.description }}</td>
                   <td><a href="{% url 'hardware:os_detail' hardware.operating_system.id %}">{{ hardware.operating_system }}</a></td>
-                  <td></td>
+                  <td>{{ hardware.vulnerability.count|add:hardware.operating_system.vulnerability.count }}</td>
                 </tr>
               {% endfor %}
               </tbody>

@@ -68,8 +68,8 @@
                   <th>#</th>
                   <th>Activity Name</th>
                   <th>Description</th>
-                  <th># vulns</th>
-                  <th>highest severity</th>
+                  <th>Daily Value</th>
+                  <th></th>
                 </tr>
               </thead>
               <tbody>
@@ -78,7 +78,7 @@
                   <td>{{forloop.counter}}</td>
                   <td><a href="{% url 'activities:detail' activity.id %}" >{{ activity.name }}</a></td>
                   <td>{{ activity.description }}</td>
-                  <td></td>
+                  <td>${{ activity.daily_value }}</td>
                   <td></td>
                 </tr>
               {% endfor %}

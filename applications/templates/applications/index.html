@@ -70,7 +70,7 @@
                   <th>Application Description</th>
                   <th>Version</th>
                   <th>Hardware/OS</th>
-                  <th>System</th>
+                  <th># Vulns</th>
                 </tr>
               </thead>
               <tbody>
@@ -81,7 +81,7 @@
                   <td>{{ application.description }}</td>
                   <td>{{ application.application }}</td>
                   <td>{% for hardware in application.hardware.all %}{{ hardware }}/{{ hardware.operating_system }}{% endfor %}</td>
-                  <td></td>
+                  <td>{{ application.vulnerability.count }}</td>
                 </tr>
               {% endfor %}
               </tbody>

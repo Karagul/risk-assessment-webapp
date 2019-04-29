@@ -68,8 +68,8 @@
                   <th>#</th>
                   <th>System Name</th>
                   <th>System Description</th>
-                  <th>Header</th>
                   <th>Third-Party?</th>
+                  <th># Vulns</th>
                 </tr>
               </thead>
               <tbody>
@@ -78,8 +78,8 @@
                   <td>{{forloop.counter}}</td>
                   <td><a href="{% url 'systems:detail' system.id %}" >{{ system.name }}</a></td>
                   <td>{{ system.description }}</td>
-                  <td>ipsum</td>
                   <td>{{ system.is_third_party }}</td>
+                  <td>ipsum</td>
                 </tr>
               {% endfor %}
               </tbody>

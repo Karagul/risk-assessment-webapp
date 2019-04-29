@@ -24,6 +24,10 @@ class InfoAssetGroup(models.Model):
     label = models.CharField(max_length=255)
     description = models.TextField(max_length=255)
     note = models.TextField(max_length=255)
+
+    confidentiality_requirement = models.CharField(max_length=255)
+    integrity_requirement = models.CharField(max_length=255)
+    availability_requirement = models.CharField(max_length=255)
     # Foreign keys
     data_types = models.ManyToManyField(DataType)
 

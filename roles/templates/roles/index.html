@@ -68,8 +68,7 @@
                   <th>#</th>
                   <th>Role Name</th>
                   <th>Role Description</th>
-                  <th># vulns</th>
-                  <th>highest severity</th>
+                  <th># System Activities</th>
                 </tr>
               </thead>
               <tbody>
@@ -78,8 +77,7 @@
                   <td>{{forloop.counter}}</td>
                   <td><a href="{% url 'roles:detail' role.id %}" >{{ role.name }}</a></td>
                   <td>{{ role.description }}</td>
-                  <td></td>
-                  <td></td>
+                  <td>{{ role.systemactivity_set.count }}</td>
                 </tr>
               {% endfor %}
               </tbody>
