@@ -35,7 +35,7 @@
 {% block content %}
         <main role="main" class="col-md-9 ml-sm-auto col-lg-10 pt-3 px-4">
           <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pb-2 mb-3 border-bottom">
-            <h1 class="h2">{{ infoassetgroup.label }}</h1>
+            <h1 class="h2">{{ systemrole }}</h1>
             <div class="btn-toolbar mb-2 mb-md-0">
               <div class="btn-group mr-2">
                 <button class="btn btn-sm btn-outline-secondary">Share</button>
@@ -49,41 +49,29 @@
           </div>
 
 
-        <p>Description: {{ infoassetgroup.description }}<br />
-          Data Types in Group: {% for type in infoassetgroup.data_types.all %}{{ type }}, {% endfor %}<br />
+        <p>Description: {{ systemrole.description }}<br />
         </p>
-        <p>
-          Confidentiality requirement: {{ infoassetgroup.confidentiality_requirement }}<br />
-          Integrity requirement: {{ infoassetgroup.integrity_requirement }}<br />
-          Availability requirement: {{ infoassetgroup.availability_requirement }}<br />
-        </p>
-        <h3>Activities, Systems and People using {{ infoassetgroup.label }}:</h3>
+        <h3>Activities Performed</h3>
           <div class="table-responsive">
             <table class="table table-striped table-sm">
               <thead>
                 <tr>
                   <th>Activity</th>
-                  <th>System</th>
-                  <th>System Role</th>
-                  <th># System Vulns</th>
+                  <th>Description</th>
+                  <th>Info Assets</th>
                 </tr>
               </thead>
               <tbody>
-              {% for activity in infoassetgroup.systemactivity_set.all %}
-              {% for role in activity.system_role.all %}
+              {% for activity in systemrole.systemactivity_set.all %}
                 <tr>
                   <td><a href="{% url 'activities:detail' activity.id %}">{{ activity }}</a></td>
-                  <td><a href="{% url 'systems:detail' role.system.id %}">{{ role.system }}</a></td>
-                  <td>{{ role }}</td>
-                  <td></td>
+                  <td>{{ activity.description }}</td>
+                  <td>{% for asset in activity.info_asset_group.all %}{{ asset }}, {% endfor %}</td>
                 </tr>
-              {% endfor %}
               {% endfor %}
               </tbody>
             </table>
           </div>
-
-
 
         </main>
       </div>

@@ -64,12 +64,10 @@
           <div class="row">
           <p>Description: {{ application.description }}<br />
           Notes: {{ application.note }}<br />
-          CPE: {{ application.cpe_string }}<br />
+          NIST CPE: {{ application.application }}<br />
           Vendor: {{ application.vendor }}<br />
-          Present in following Hardware: {% for hardware in application.hardware.all %}{{ hardware }}, {% endfor %}</p>
+          Present in following Hardware: {% for hardware in application.hardware.all %}<a href="{% url 'hardware:detail' hardware.id %}">{{ hardware }}</a>, {% endfor %}</p>
           <p>
-          System Activities: {% for activity in application.systemactivity_set.all %} {{ activity }}, {% endfor %}<br />
-          Information Assets
           </p> 
 
           </div>

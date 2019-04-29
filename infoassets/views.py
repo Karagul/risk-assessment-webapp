@@ -13,4 +13,4 @@ class IndexView(generic.ListView):
 
 class DetailView(generic.DetailView):
     model = InfoAssetGroup
-    template_name = 'hardware/detail.html'
+    template_name = 'infoassets/detail.html'
