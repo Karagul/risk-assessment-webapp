@@ -44,6 +44,7 @@ INSTALLED_APPS = [
     #Third-Party apps
     'dal',
     'dal_select2',
+    'django_extensions',
     #default apps
     'django.contrib.admin',
     'django.contrib.auth',

@@ -91,10 +91,10 @@
           {% for activity in application.systemactivity_set.all %}
                 <tr>
                   <th>{{ forloop.counter }}</th>
-                  <td>{{ activity }}</td>
+                  <td><a href="{% url 'activities:detail' activity.id %}">{{ activity }}</a></td>
                   <td>{{ activity.description }}</td>
-                  <td>{% for asset in activity.info_asset_group.all %}{{ asset }},<br /> {% endfor %}</td>
-                  <td>{% for role in activity.system_role.all %}{{ role }},<br /> {% endfor %}</td>
+                  <td>{% for asset in activity.info_asset_group.all %}<a href="{% url 'infoassets:detail' asset.id %}">{{ asset }}</a>,<br /> {% endfor %}</td>
+                  <td>{% for role in activity.system_role.all %}<a href="{% url 'roles:detail' role.id %}">{{ role }}</a>,<br /> {% endfor %}</td>
                   <td>${{ activity.daily_value }}</td>
                 </tr>
               {% endfor %}
