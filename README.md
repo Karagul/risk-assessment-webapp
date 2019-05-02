@@ -4,8 +4,12 @@ Application to perform a risk assessment by enumerating business activities, the
 
 This project is still in the beginning stages and was mostly used as a proof-of-concept on how one might approach quantifying security risk and its potential monetary impact on a business. 
 
+## Entity-Relationship Diagram for Database
+
+![](templates/output.png)
+
 ## Third-Party Resources Used
 
-NIST Data Feeds: https://nvd.nist.gov/vuln/data-feeds
-CVESearch API: https://cve.circl.lu/
-Python Wrapper for CVESearch API: https://github.com/barnumbirr/ares
+NIST Data Feeds: https://nvd.nist.gov/vuln/data-feeds  
+CVESearch API: https://cve.circl.lu/  
+Python Wrapper for CVESearch API: https://github.com/barnumbirr/ares  
